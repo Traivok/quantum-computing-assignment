@@ -3,39 +3,6 @@ import qiskit
 from functools import reduce
 
 ################################################################################
-## B Tree
-arr = [0, 1, 2, 3, 4, 5, 6]
-
-def BTree(N):
-    q = []
-
-    def rec(a, b):
-        if a == b:
-            return
-
-        m = (a+b)   // 2
-        l = (a+m-1) // 2
-        r = (m+1+b) // 2
-
-        q.append((m, l, r))
-        rec(a, m-1)
-        rec(m+1, b)
-
-    rec(0, N)
-
-    arr = []
-    if len(q) > 0:
-        (m, l, r) = q[0]
-        arr.append(m)
-
-    for i in range(len(q)):
-        (m, l, r) = q[i]
-        arr.append(l)
-        arr.append(r)
-
-    return arr
-
-################################################################################
 ## Gen Angles
 def gen_angles(x):
   if (len(x) > 1):
@@ -65,7 +32,6 @@ def gen_angles(x):
 ## Gen Circuit
 def gen_circuit(angles):
     N = len(angles) + 1
-    bt = BTree(N - 2)
 
     circuit = qiskit.QuantumCircuit(N - 1)
 
@@ -86,11 +52,8 @@ def gen_circuit(angles):
             circuit.cswap(actual, left_index, right_index)
 
             left_index = left(left_index)
-            right_index = left(right_index)
+            right_index = right(right_index)
 
         actual = actual - 1
 
     return circuit
-
-v = list(map(lambda a: np.sqrt(a), [.03, .07, .15, .05, .1, .3, .2, .1]))
-print( gen_circuit(gen_angles(v)).draw() )
