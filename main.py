@@ -52,7 +52,7 @@ def gen_circuit(angles):
             circuit.cswap(actual, left_index, right_index)
 
             left_index = left(left_index)
-            right_index = right(right_index)
+            right_index = left(right_index)
 
         actual = actual - 1
 
